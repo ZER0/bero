@@ -1,5 +1,7 @@
 # Bero
 
+[![Build Status](https://travis-ci.com/ZER0/bero.svg?branch=master)](https://travis-ci.com/ZER0/bero)
+
 A simple JavaScript utility for generating classnames following the BEM principles.
 
 Usage:
@@ -150,18 +152,6 @@ export default class Button {
     );
   }
 }
-
-var Button = React.createClass({
-  // ...
-  render() {
-    var btnClass = classNames({
-      btn: true,
-      "btn-pressed": this.state.isPressed,
-      "btn-over": !this.state.isPressed && this.state.isHovered
-    });
-    return <button className={btnClass}>{this.props.label}</button>;
-  }
-});
 ```
 
 ## License
