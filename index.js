@@ -8,7 +8,7 @@
   "use strict";
 
   function toArray(arrayLike) {
-    const length = arrayLike.length;
+    var length = arrayLike.length;
     return length === 0
       ? []
       : length === 1
@@ -24,7 +24,7 @@
   }
 
   function bera(block, elem, mods) {
-    let identifier = block;
+    var identifier = block;
 
     if (typeof elem === "string") {
       identifier = block + "__" + elem;
@@ -32,11 +32,11 @@
       mods = elem;
     }
 
-    const classes = [identifier];
-    const isModsArray = Array.isArray(mods);
+    var classes = [identifier];
+    var isModsArray = Array.isArray(mods);
 
-    for (const key in mods) {
-      const value = mods[key];
+    for (var key in mods) {
+      var value = mods[key];
       if (mods.hasOwnProperty(key) && value) {
         classes.push(
           identifier + "--" + toKebabCase(isModsArray ? value : key)
@@ -48,8 +48,8 @@
   }
 
   function bem() {
-    const args = toArray(arguments);
-    const length = args.length;
+    var args = toArray(arguments);
+    var length = args.length;
 
     if (length === 0) {
       return bem;
@@ -61,7 +61,7 @@
 
     if (length < 3) {
       return function() {
-        const _args = toArray(arguments);
+        var _args = toArray(arguments);
         _args.unshift.apply(_args, args);
         return bera.apply(this, _args);
       };
