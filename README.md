@@ -124,6 +124,40 @@ bem("button__label", {
 // => button__label button__red
 ```
 
+#### from camel case to kebab case
+
+All modifiers are automatically converted from camel case to kebab case:
+
+```js
+bem("button__label", {
+  hasFocus
+});
+// with `hasFocus`: true
+// => button__label button__label--has-focus
+
+bem("button__label", ["ColorRed"]);
+// => button__label button__label--color-red
+
+bem("button__label", ["DOMLoaded"]);
+// => button__label button__label--dom-loaded
+```
+
+Any numbers of hyphen at the beginning of the string would be removed:
+
+```js
+bem("button__label", ["-foo", "--bar", "---baz"]);
+// => button__label button__label--foo button__label--bar button__label--baz
+```
+
+And any numbers of hyphen inside the string would be reduced to one:
+
+```js
+bem("button__label", ["foo----bar"]);
+// => button__label button__label--foo-bar
+```
+
+So that even in those edge cases the BEM naming convention is kept.
+
 ### The `join` function
 
 `bero` comes with an utility function that helps to concatenate several `truthy` values in one string. That's useful when the generated _BEM_ classname needs to

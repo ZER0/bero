@@ -34,6 +34,42 @@ test("bem(block, elem, Array) full signature call", assert => {
   assert.end();
 });
 
+test("bem(block, Object) returns the expected classname", assert => {
+  assert.equal(
+    bem("block", { foo: true, bar: false, bazQux: 1 }),
+    "block block--foo block--baz-qux"
+  );
+
+  assert.end();
+});
+
+test("bem(block, Array) returns the expected classname", assert => {
+  assert.equal(
+    bem("block", ["foo", undefined, "bazQux"]),
+    "block block--foo block--baz-qux"
+  );
+
+  assert.end();
+});
+
+test("bem(block, Object) returns kebab case modifiers", assert => {
+  assert.equal(
+    bem("block", { FooBar: true, ["BAZ-Qux"]: true, DOMContentLoaded: true }),
+    "block block--foo-bar block--baz-qux block--dom-content-loaded"
+  );
+
+  assert.end();
+});
+
+test("bem(block, Array) returns kebab case modifiers", assert => {
+  assert.equal(
+    bem("block", ["FooBar", "BAZ-Qux", "DOMContentLoaded"]),
+    "block block--foo-bar block--baz-qux block--dom-content-loaded"
+  );
+
+  assert.end();
+});
+
 test("bem(block) only block given", assert => {
   const block = bem("block");
 
@@ -173,6 +209,15 @@ test("bem(block, elem, Object) returns the expected classname", assert => {
   assert.equal(
     elem({ foo: true, bazQux: true, bar: 1 }),
     "block__elem block__elem--foo block__elem--baz-qux block__elem--bar"
+  );
+
+  assert.end();
+});
+
+test("hyphens on kebab case modifiers", assert => {
+  assert.equal(
+    bem("block", ["----Foo-------Bar", "BAZ--Qux", "-DOM-Content-Loaded"]),
+    "block block--foo-bar block--baz-qux block--dom-content-loaded"
   );
 
   assert.end();

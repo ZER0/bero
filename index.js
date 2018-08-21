@@ -7,6 +7,14 @@
 (function() {
   "use strict";
 
+  function isArray(target) {
+    return Object.prototype.toString.call(target) === "[object Array]";
+  }
+
+  function isObject(target) {
+    return typeof target === "object" && target;
+  }
+
   function toArray(arrayLike) {
     var length = arrayLike.length;
     return length === 0
@@ -16,11 +24,20 @@
         : Array.apply(null, arrayLike);
   }
 
-  function toHyphen(match) {
-    return "-" + match.toLowerCase();
+  function toHyphen(match, hyphen, index) {
+    var prefix = !hyphen ? "-" : "";
+    var text = hyphen ? match.substr(hyphen.length - 1) : match;
+    return prefix + text;
   }
   function toKebabCase(classname) {
-    return classname.replace(/[A-Z]/g, toHyphen);
+    return classname
+      .replace(/(-*)[A-Z](?:[^A-Z-]|$)/g, toHyphen)
+      .replace(/^-*/, "")
+      .toLowerCase();
+  }
+
+  function isMods(target) {
+    return isObject(target) || isArray(target);
   }
 
   function bera(block, elem, mods) {
@@ -33,7 +50,7 @@
     }
 
     var classes = [identifier];
-    var isModsArray = Array.isArray(mods);
+    var isModsArray = isArray(mods);
 
     for (var key in mods) {
       var value = mods[key];
@@ -47,19 +64,24 @@
     return classes.join(" ");
   }
 
-  function bem() {
-    var args = toArray(arguments);
-    var length = args.length;
+  function bem(block, elem, mods) {
+    var length = arguments.length;
 
     if (length === 0) {
       return bem;
     }
 
     if (length === 3) {
-      return bera.apply(this, args);
+      return bera.call(this, block, elem, mods);
+    }
+
+    if (length === 2 && isMods(elem)) {
+      return bera.call(this, block, elem);
     }
 
     if (length < 3) {
+      var args = toArray(arguments);
+
       return function() {
         var _args = toArray(arguments);
         _args.unshift.apply(_args, args);
@@ -76,11 +98,7 @@
 
   if (typeof module !== "undefined" && module.exports) {
     bem.default = module.exports = bem;
-  } else if (
-    typeof define === "function" &&
-    typeof define.amd === "object" &&
-    define.amd
-  ) {
+  } else if (typeof define === "function" && isObject(define.amd)) {
     // register as 'bem', consistent with npm package name
     define("bem", [], function() {
       return bem;

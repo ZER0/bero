@@ -1,6 +1,6 @@
 {
   "name": "bero",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A simple utility function inspired by classnames to handle BEM naming",
   "main": "index.js",
   "author": "zer0 <zer0.kaos@gmail.com>",
