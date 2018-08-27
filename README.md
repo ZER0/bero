@@ -115,13 +115,13 @@ With [computed property names](https://developer.mozilla.org/en-US/docs/Web/Java
 
 ```js
 bem("button__label", {
-  [color]: !!color
+  [`text-${color}`]: !!color
 });
 // with `color`: undefined:
 // => button__label
 
 // with `color`: "red"
-// => button__label button__red
+// => button__label button__label--text-red
 ```
 
 #### from camel case to kebab case
