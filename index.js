@@ -20,8 +20,8 @@
     return length === 0
       ? []
       : length === 1
-        ? [arrayLike[0]]
-        : Array.apply(null, arrayLike);
+      ? [arrayLike[0]]
+      : Array.apply(null, arrayLike);
   }
 
   function toHyphen(match, hyphen, index) {
@@ -49,15 +49,18 @@
       mods = elem;
     }
 
-    var classes = [identifier];
+    var item =
+      this && this.hasOwnProperty(identifier) ? this[identifier] : identifier;
+
+    var classes = [item];
     var isModsArray = isArray(mods);
 
     for (var key in mods) {
       var value = mods[key];
       if (mods.hasOwnProperty(key) && value) {
-        classes.push(
-          identifier + "--" + toKebabCase(isModsArray ? value : key)
-        );
+        var item = identifier + "--" + toKebabCase(isModsArray ? value : key);
+        item = this && this.hasOwnProperty(item) ? this[item] : item;
+        classes.push(item);
       }
     }
 
@@ -81,11 +84,11 @@
 
     if (length < 3) {
       var args = toArray(arguments);
-
+      var thisArg = this;
       return function() {
         var _args = toArray(arguments);
         _args.unshift.apply(_args, args);
-        return bera.apply(this, _args);
+        return bera.apply(thisArg, _args);
       };
     }
   }
