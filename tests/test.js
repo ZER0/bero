@@ -231,3 +231,21 @@ test("bem.join(...args)", assert => {
 
   assert.end();
 });
+
+test("binding a map object", assert => {
+  const bm = bem.bind({
+    block: "blck",
+    block__item: "blck-item",
+    "block__item--foo": "b-item-foo",
+    "block--disabled": "bl-dis"
+  });
+
+  const block = bm("block");
+
+  assert.equal(block(), "blck");
+  assert.equal(bm("block")(), "blck");
+  assert.equal(block({ disabled: true, active: false }), "blck bl-dis");
+  assert.equal(bm("block")("item", ["foo"]), "blck-item b-item-foo");
+
+  assert.end();
+});

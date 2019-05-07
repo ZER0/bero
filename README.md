@@ -22,7 +22,7 @@ I wanted a similar non-invasive approach as `classnames` lib, but following the 
 
 ### Why "bero"?
 
-It's a reference to _Yōkai Ningen Bem (妖怪人間ベム Yōkai Ningen Bemu_, translated officially as _Humanoid Monster Bem_), a 1968 Japanise anime that I used to watch when I was a kid. The main characters were _Bem_, _Bera_ and _Bero_.
+It's a reference to _Yōkai Ningen Bem (妖怪人間ベム Yōkai Ningen Bemu_, translated officially as _Humanoid Monster Bem_), a 1968 Japanese anime that I used to watch when I was a kid. The main characters were _Bem_, _Bera_ and _Bero_.
 
 ## Usage
 
@@ -169,6 +169,39 @@ be concatenate by external strings, such a `className` passed by props in React.
 import bem, { join } from "bero";
 
 const button = bem("button");
+
+export default class Button {
+  // ...
+  render() {
+    const { pressed, hover } = this.state;
+    const { className, label, onClick } = this.props;
+
+    return (
+      <button
+        className={join(button({ pressed, hover }), className)}
+        onClick={onClick}
+      >
+        <label className={button("label", ["strong"])}>{label}</label>
+      </button>
+    );
+  }
+}
+```
+
+### Usage with css-modules
+
+It is possible [bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind) the `bem` function to an object that acts as a map.
+
+This is helpful for example when [css-modules](https://github.com/css-modules/css-modules) is used:
+
+```js
+import bem, { join } from "bero";
+import styles from "./button.module.css";
+
+const button = bem.bind(styles)("button");
+
+// Also this syntax is perfectly valid:
+//    const button = bem.bind(styles, "button")();
 
 export default class Button {
   // ...
